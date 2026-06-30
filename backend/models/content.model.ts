@@ -8,6 +8,8 @@ export interface IContent extends Document {
   scheduledDate?: Date;
 }
 
+export type ContentInput = Omit<IContent, keyof Document>;
+
 const contentSchema = new mongoose.Schema<IContent>({
   title: {
     type: String,
