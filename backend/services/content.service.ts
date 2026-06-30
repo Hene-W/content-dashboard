@@ -1,6 +1,6 @@
-import Content, { IContent } from "../models/content.model";
+import Content, { IContent, ContentInput } from "../models/content.model";
 
-export const createContentService = async (contentData: IContent, ): Promise<IContent> => {
+export const createContentService = async (contentData: ContentInput): Promise<IContent> => {
   const content = await Content.create(contentData);
   return content;
 };
