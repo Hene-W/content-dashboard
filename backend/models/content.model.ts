@@ -1,6 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-const contentSchema = new mongoose.Schema({
+export interface IContent extends Document {
+  title: string;
+  description?: string;
+  platform: "YouTube" | "Instagram" | "TikTok" | "Facebook" | "Twitter" | "Blog";
+  status: "à faire" | "en cours" | "publié";
+  scheduledDate?: Date;
+}
+
+const contentSchema = new mongoose.Schema<IContent>({
   title: {
     type: String,
     required: true,
