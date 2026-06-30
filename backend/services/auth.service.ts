@@ -19,16 +19,25 @@ export const loginService = async (email: string, password: string): Promise<{to
     return { token, user: userWithoutPassword }
 }
 
-export const updateEmail = async (userId: string, newEmail: string): Promise<boolean> => {
-    const user = await User.findByIdAndUpdate(userId, {email: newEmail}, {new: true})
+export const getMeService = async (userId: string): Promise<object> => {
+    const user = await User.findById(userId).select('-password')
     if (!user) {
         throw new Error('User not found')
     }
 
-    return true
+    return user
 }
 
-export const changePassword = async (userId: string, oldPassword: string, newPassord: string): Promise<boolean> => {
+export const updateEmailService = async (userId: string, newEmail: string): Promise<object> => {
+    const user = await User.findByIdAndUpdate(userId, {email: newEmail}, {new: true}).select('-password')
+    if (!user) {
+        throw new Error('User not found')
+    }
+
+    return user
+}
+
+export const changePasswordService = async (userId: string, oldPassword: string, newPassord: string): Promise<boolean> => {
     const user = await User.findById(userId)
     if (!user) {
         throw new Error('User not found')
