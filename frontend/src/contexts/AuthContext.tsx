@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { changePasswordService, getMeService, loginService, logoutService, updateEmailService } from "../services/auth.service";
 
 interface AuthContextType {
+  isInitialized: boolean;
   isAuthenticated: boolean;
   user: any;
   login: (email: string, password: string) => Promise<void>;
@@ -13,6 +14,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isInitialized, setIsInitialized] = useState<boolean>(false)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
 
@@ -33,6 +35,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("Error fetching user data:", error);
         setIsAuthenticated(false);
         setUser(null);
+      } finally {
+        setIsInitialized(true);
       }
     };
 
@@ -85,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, updateEmail, changePassword }}>
+    <AuthContext.Provider value={{ isInitialized, isAuthenticated, user, login, logout, updateEmail, changePassword }}>
       {children}
     </AuthContext.Provider>
   );
