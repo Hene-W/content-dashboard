@@ -1,14 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { changePasswordService, getMeService, loginService, logoutService, updateEmailService } from "../services/auth.service";
+import { toast } from "sonner";
 
 interface AuthContextType {
   isInitialized: boolean;
   isAuthenticated: boolean;
   user: any;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  updateEmail: (newEmail: string) => Promise<void>;
-  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => Promise<boolean>;
+  updateEmail: (newEmail: string) => Promise<boolean>;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -43,48 +44,60 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     fetchMe();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
       const result = await loginService(email, password);
       if (!result) {
         setIsAuthenticated(false);
         setUser(null);
-        return;
+        return false;
       }
 
       setIsAuthenticated(true);
       setUser(result);
+      return true;
     } catch (error: unknown) {
       console.error("Error logging in:", error);
+      toast.error("Email ou mot de passe incorrect")
       setIsAuthenticated(false);
       setUser(null);
+      return false
     }
   };
 
-  const logout = async () => {
+  const logout = async (): Promise<boolean> => {
     try {
         await logoutService();
         setIsAuthenticated(false);
         setUser(null);
+        return true
     } catch (error: unknown) {
         console.error("Error logging out:", error);
+        toast.error("Erreur lors de la déconnexion")
+        return false
     }
   }
 
-  const updateEmail = async (newEmail: string) => {
+  const updateEmail = async (newEmail: string): Promise<boolean> => {
     try {
         const result = await updateEmailService(newEmail);
         setUser(result);
+        return true
     } catch (error: unknown) {
         console.error("Error updating email:", error);
+        toast.error("Erreur lors de la mise à jour de l'email")
+        return false
     }
   }
 
-  const changePassword = async (oldPassword: string, newPassword: string) => {
+  const changePassword = async (oldPassword: string, newPassword: string): Promise<boolean> => {
     try {
         await changePasswordService(oldPassword, newPassword);
+        return true
     } catch (error: unknown) {
         console.error("Error changing password:", error);
+        toast.error("Erreur lors du changement de mot de passe")
+        return false
     }
   };
 

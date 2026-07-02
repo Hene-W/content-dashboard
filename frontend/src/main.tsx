@@ -9,11 +9,13 @@ import DashboardPage from "./pages/DashboardPage";
 import ContentDetailPage from "./pages/ContentDetailPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
+        <Toaster />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><App /></ProtectedRoute>}>
