@@ -72,7 +72,7 @@ const LoginPage = () => {
 
             <button
               type="submit"
-              className="w-full rounded-2xl bg-[#059669] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#059669]/20 transition hover:bg-[#047857] hover:cursor-pointer"
+              className="w-full rounded-2xl bg-primary px-4 py-3 font-semibold text-white shadow-lg shadow-[#059669]/20 transition hover:bg-primary-hover hover:cursor-pointer"
             >
               Se connecter
             </button>
