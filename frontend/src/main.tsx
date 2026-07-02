@@ -10,20 +10,30 @@ import ContentDetailPage from "./pages/ContentDetailPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { Toaster } from "sonner";
+import { ContentProvider } from "./contexts/ContentContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <Toaster richColors />
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/dashboard" element={<ProtectedRoute><App /></ProtectedRoute>}>
-            <Route index element={<DashboardPage />} />
-            <Route path="content/:id" element={<ContentDetailPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
-        </Routes>
+        <ContentProvider>
+          <Toaster richColors />
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <App />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<DashboardPage />} />
+              <Route path="content/:id" element={<ContentDetailPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
+          </Routes>
+        </ContentProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
