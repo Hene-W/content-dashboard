@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <Toaster />
+        <Toaster richColors />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><App /></ProtectedRoute>}>
